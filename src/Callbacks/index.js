@@ -1,7 +1,7 @@
 export function observedAttributesCallback(property, oldValue, newValue) {
 
     switch (property) {
-        case 'version':
+        case 'marker':
             if (oldValue !== newValue){
                 
                 globalPubSub.dispatchEvent(
@@ -30,10 +30,10 @@ function registerTemplateContentIDs(content){
     )
 }
 
-export function processShadowTree(_this, _props){
+export function setInitial(_this, _props){
 
-    const { version: currentVersion } = _props?.observedAttrs;
-        _this.setAttribute(_this.constructor.observedAttributes[0], currentVersion || '');
+    const { marker: currentMarker } = _props?.observedAttrs;
+        _this.setAttribute(_this.constructor.observedAttributes[0], currentMarker || '');
 
     return {
         isDone: true,

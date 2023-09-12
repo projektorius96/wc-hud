@@ -1,10 +1,10 @@
 import { html } from 'lit-html';
-export default (function getDefaultTemplate(_version = "", currentAt = 0){
+export default (function getDefaultTemplate(_marker = "", currentAt = 0){
     return (
         html`
-            <template id="wchud" version>
+            <template id="wchud" marker>
                 <DETAILS>
-                    <SUMMARY>${_version}</SUMMARY>
+                    <SUMMARY>${_marker}</SUMMARY>
                 </DETAILS>
             </template>
         `.strings.raw.at(currentAt)

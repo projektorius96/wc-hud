@@ -17,12 +17,28 @@ class WC_HUD extends HTMLElement {
 
         super();
 
-        globalPubSub.addEventListener(`action:subscribe`, ({detail})=>{
-            console.log(detail);
-            this.children.details.firstElementChild.textContent = detail.version;
+        const { isDone, container } = processShadowTree(this, props);
+            this.appendChild(container)
+                            container.addEventListener("click", (e)=>{
+                                const theContainer = e.currentTarget;
+                                let isOpened = theContainer.getAttributeNames().indexOf("open")
+                                if (isOpened > - 1) {
+                                    /* console.log("CLOSED"); */// [PASSED]
+                                    /* container.textContent = "➕"; */// DEV_NOTE__NEXTGOAL # instead change this through constructable sheets
+                                    container.firstElementChild.textContent = ""
+                                }
+                                else {
+                                    /* console.log("OPENED"); */// [PASSED]
+                                    /* container.textContent = "➖"; */// DEV_NOTE__NEXTGOAL # instead change this through constructable sheets
+                                    container.firstElementChild.textContent = this.attributes.version.value // <= in the future container.firstElementChild will append some inner content to itself
+                                }
+                            })
+
+        globalPubSub.addEventListener(`override:summery`, ({detail})=>{
+            container.firstElementChild.textContent = detail.version;
         })
 
-        if (processShadowTree(this, props)){
+        if (isDone){
 
             registerGetterSetter(this);
             
@@ -42,7 +58,7 @@ document.body.appendChild(
         template: document.body.children?.wchud
         ,
         observedAttrs: {
-            version: '1.0.0'
+            version: "SUMMARY_CONTENT_PLACEHOLDER # VERSION 1.0.0"
         }
     }])
 )

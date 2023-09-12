@@ -8,7 +8,7 @@ class WC_HUD extends HTMLElement {
 
     static get observedAttributes(){
         if(window.document){
-            document.body.innerHTML = getDefaulTemplate(); /* DEV_NOTE__IMPORTANT # this must be called because it has to be available before Reflect.construct() consumes template argument */
+            document.body.innerHTML = getDefaulTemplate(); /* DEV_NOTE__IMPORTANT # MUST be called first as before Reflect.construct() consumes template argument */
             return [...new DOMParser().parseFromString(getDefaulTemplate(), 'text/html').all.wchud.getAttributeNames().slice(1)]
         }
     }
@@ -19,23 +19,23 @@ class WC_HUD extends HTMLElement {
 
         const { isDone, container } = processShadowTree(this, props);
             this.appendChild(container)
-                            container.addEventListener("click", (e)=>{
-                                const theContainer = e.currentTarget;
-                                let isOpened = theContainer.getAttributeNames().indexOf("open")
-                                if (isOpened > - 1) {
-                                    /* console.log("CLOSED"); */// [PASSED]
-                                    /* container.textContent = "➕"; */// DEV_NOTE__NEXTGOAL # instead change this through constructable sheets
-                                    container.firstElementChild.textContent = ""
-                                }
-                                else {
-                                    /* console.log("OPENED"); */// [PASSED]
-                                    /* container.textContent = "➖"; */// DEV_NOTE__NEXTGOAL # instead change this through constructable sheets
-                                    container.firstElementChild.textContent = this.attributes.version.value // <= in the future container.firstElementChild will append some inner content to itself
-                                }
-                            })
+            container.addEventListener("click", (e)=>{
+                const theContainer = e.currentTarget;
+                let isOpened = theContainer.getAttributeNames().indexOf("open"); console.log(isOpened);
+                if (isOpened > - 1) {
+                    /* console.log("CLOSED"); */// [PASSED]
+                    document.styleSheets[0].insertRule(":root { --content: \"➕\"; }", document.styleSheets[0].cssRules.length)
+                    container.firstElementChild.textContent = "";
+                }
+                else {
+                    /* console.log("OPENED"); */// [PASSED]
+                    document.styleSheets[0].insertRule(":root { --content: \"➖\"; }", document.styleSheets[0].cssRules.length)
+                    container.firstElementChild.textContent = this.attributes?.version.value; // <= in the future container.firstElementChild will append some inner content to itself
+                }
+            })
 
         globalPubSub.addEventListener(`override:summery`, ({detail})=>{
-            container.firstElementChild.textContent = detail.version;
+            container.firstElementChild.textContent = detail?.version;
         })
 
         if (isDone){

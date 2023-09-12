@@ -1,3 +1,7 @@
+:root {
+    --content: "➕";
+}
+
 body,
 body * {
     margin: 0;
@@ -6,5 +10,5 @@ body * {
 }
 
 summary::marker {
-    content: "➕";
+    content: var(--content)
 }

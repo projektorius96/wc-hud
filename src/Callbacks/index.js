@@ -3,13 +3,11 @@ export function observedAttributesCallback(property, oldValue, newValue) {
     switch (property) {
         case 'marker':
             if (oldValue !== newValue){
-                
                 globalPubSub.dispatchEvent(
                     new CustomEvent("override:summery", {detail: {
                         [property]: newValue
                     }})
                 )
-
             }
             break;
         case 'other':
@@ -40,4 +38,22 @@ export function setInitial(_this, _props){
         container: registerTemplateContentIDs(_props?.template.content)
     };
 
+}
+
+export function showGUI(_thisArg, _container) {
+    _container.addEventListener("click", (e)=>{
+        const theContainer = e.currentTarget;
+        let isOpened = theContainer.getAttributeNames().indexOf("open");
+        if (isOpened > - 1) {
+            /* console.log("CLOSED"); */// [PASSED]
+            document.styleSheets[0].insertRule(":root { --content: \"➕\"; }", document.styleSheets[0].cssRules.length)
+            _container.firstElementChild.textContent = "";
+        }
+        else {
+            /* console.log("OPENED"); */// [PASSED]
+            document.styleSheets[0].insertRule(":root { --content: \"➖\"; }", document.styleSheets[0].cssRules.length)
+            _container.firstElementChild.textContent = _thisArg.attributes?.marker.value; // <= in the future container.firstElementChild will append some inner content to itself
+        }
+    })
+    return _container;
 }

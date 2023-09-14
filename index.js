@@ -1,7 +1,11 @@
 import './global.css';
 import getDefaulTemplate from './src/Templates/index.js';
 import { registerGetterSetter } from './src/Utils/registerGetterSetter.js';
-import { setInitial, observedAttributesCallback as observer } from './src/Callbacks/index.js';
+import { 
+    setInitial, 
+    showGUI, 
+    observedAttributesCallback as observer
+} from './src/Callbacks/index.js';
 
 globalThis.globalPubSub = new EventTarget()
 class WC_HUD extends HTMLElement {
@@ -17,31 +21,17 @@ class WC_HUD extends HTMLElement {
 
         super();
 
-        const { isDone, container } = setInitial(this, props);
+        const self = this;
+        const { isDone, container } = setInitial(self, props);
         
-        this.appendChild(container)
-            container.addEventListener("click", (e)=>{
-                const theContainer = e.currentTarget;
-                let isOpened = theContainer.getAttributeNames().indexOf("open");
-                if (isOpened > - 1) {
-                    /* console.log("CLOSED"); */// [PASSED]
-                    document.styleSheets[0].insertRule(":root { --content: \"➕\"; }", document.styleSheets[0].cssRules.length)
-                    container.firstElementChild.textContent = "";
-                }
-                else {
-                    /* console.log("OPENED"); */// [PASSED]
-                    document.styleSheets[0].insertRule(":root { --content: \"➖\"; }", document.styleSheets[0].cssRules.length)
-                    container.firstElementChild.textContent = this.attributes?.marker.value; // <= in the future container.firstElementChild will append some inner content to itself
-                }
-            })
-
         globalPubSub.addEventListener(`override:summery`, ({detail})=>{
             container.firstElementChild.textContent = detail?.marker;
         })
 
         if (isDone){
 
-            registerGetterSetter(this);
+            registerGetterSetter(self);
+            self.appendChild( showGUI(self, container) );
             
         }
 

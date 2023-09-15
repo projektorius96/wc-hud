@@ -18,13 +18,13 @@ export function observedAttributesCallback(property, oldValue, newValue) {
     
 }
 
-function registerTemplateContentIDs(content){
-    Array.from(content.children).forEach((each, i)=>{
+function registerTemplateContentIDs(_content){
+    Array.from(_content.children).forEach((each, i)=>{
         /* if (each.tagName === 'A') console.log(new URL(each.href)?.pathname.split(",")) */// [PASSED] DEV_NOTE # use href for standardized URL constructor to register globalPubSub requests
         each.id = each.tagName.toLowerCase();
     })
     return (
-        content.children.details
+        _content.children.details
     )
 }
 

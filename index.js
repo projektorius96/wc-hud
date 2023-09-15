@@ -13,7 +13,7 @@ class WC_HUD extends HTMLElement {
     static get observedAttributes(){
         if(window.document){
             document.body.innerHTML = getDefaulTemplate(); /* DEV_NOTE__IMPORTANT # MUST be called first as before Reflect.construct() consumes template argument */
-            return [...new DOMParser().parseFromString(getDefaulTemplate(), 'text/html').all.wchud.getAttributeNames().slice(1)]
+            return [...new DOMParser().parseFromString(getDefaulTemplate(), 'text/html').all['wc-hud'].getAttributeNames().slice(1)]
         }
     }
 
@@ -46,7 +46,7 @@ class WC_HUD extends HTMLElement {
 customElements.define('wc-hud', WC_HUD);
 document.body.appendChild(
     Reflect.construct(customElements.get('wc-hud'), [{
-        template: document.body.children?.wchud
+        template: document.body.children['wc-hud']
         ,
         observedAttrs: {
             marker: "SUMMARY_CONTENT_PLACEHOLDER"

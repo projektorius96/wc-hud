@@ -2,7 +2,7 @@ import { html } from 'lit-html';
 export default (function getDefaultTemplate(_marker = "", currentAt = 0){
     return (
         html`
-            <template id="wchud" marker>
+            <template id="wc-hud" marker>
                 <DETAILS>
                     <SUMMARY>${_marker}</SUMMARY>
                 </DETAILS>

@@ -3,7 +3,7 @@ import getDefaulTemplate from './src/Templates/index.js';
 import { registerGetterSetter } from './src/Utils/registerGetterSetter.js';
 import { 
     setInitial, 
-    showGUI, 
+    showGUI as init, 
     observedAttributesCallback as observer
 } from './src/Callbacks/index.js';
 
@@ -30,8 +30,8 @@ class WC_HUD extends HTMLElement {
 
         if (isDone){
 
-            registerGetterSetter(self);
-            self.appendChild( showGUI(self, container) );
+            registerGetterSetter(this);
+            self.appendChild( init(this, container) );
             
         }
 
@@ -45,13 +45,13 @@ class WC_HUD extends HTMLElement {
 
 customElements.define('wc-hud', WC_HUD);
 document.body.appendChild(
-    Reflect.construct(customElements.get('wc-hud'), [{
+    Reflect.construct(customElements.get('wc-hud'), [/* constructor.props@object ==> */{
         template: document.body.children['wc-hud']
         ,
         observedAttrs: {
             marker: "SUMMARY_CONTENT_PLACEHOLDER"
         }
-    }])
+    }/* <== constructor.props@object */])
 )
 
 ///*  === DEV_NOTE # HOW TO USE GETTER/SETTER PAIR === */

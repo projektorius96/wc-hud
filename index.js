@@ -12,8 +12,8 @@ class WC_HUD extends HTMLElement {
 
     static get observedAttributes(){
         if(window.document){
-            document.body.innerHTML = getDefaultTemplate(); /* DEV_NOTE__IMPORTANT # MUST be called first as before Reflect.construct() consumes template argument */
-            return [...new DOMParser().parseFromString(getDefaultTemplate(), 'text/html').all['wc-hud'].getAttributeNames().slice(1)]
+            document.body.innerHTML += getDefaultTemplate('wc-hud', false); /* DEV_NOTE__IMPORTANT # MUST be called first right before Reflect.construct() consumes template argument */
+            return [...getDefaultTemplate('wc-hud', true).all['wc-hud'].getAttributeNames().slice(1)]
         }
     }
 
@@ -32,7 +32,6 @@ class WC_HUD extends HTMLElement {
 
             registerGetterSetter(this);
             self.appendChild( init(this, container) );
-            self.name = "wc-hud";
             
         }
 
@@ -50,7 +49,7 @@ class WC_HUD extends HTMLElement {
 
 customElements.define('wc-hud', WC_HUD);
 const HUD = Reflect.construct(customElements.get('wc-hud'), [/* constructor.props@object ==> */{
-    template: document.body.children['wc-hud']
+    template: getDefaultTemplate('wc-hud', true).all['wc-hud']
     ,
     observedAttrs: {
         marker: ""

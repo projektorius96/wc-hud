@@ -1,17 +1,32 @@
 /* import { html } from 'lit-html'; */// DEV_NOTE # temporarily used for highlighting instead of 3rd party extension
-export function getDefaultTemplate(_marker = "", _index = 0){
+export function getDefaultTemplate(_id = "wc-hud", isParsed = false){
 
-    return (
-            // DEV_NOTE@NEXT_GOAL # registerGetterSetter for {value,step,min,max} instead of marker, as the marker attribute herein is not needed anymore, permission to resign is given
-            /* html */`
-                <template id="wc-hud" marker>
+    if (!isParsed){
+        return (
+            `
+                <template id="${_id}" marker>
                     <DETAILS>
-                        <SUMMARY>${_marker}</SUMMARY>
+                        <SUMMARY></SUMMARY>
                     </DETAILS>
                 </template>
             `
-
-    )
+        )
+    }
+    else {
+        return (
+            new DOMParser()
+            .parseFromString(
+            `
+            <template id="${_id}" marker>
+                <DETAILS>
+                    <SUMMARY></SUMMARY>
+                </DETAILS>
+            </template>
+            `
+            ,
+            'text/html')
+        )
+    }
     
 }
 

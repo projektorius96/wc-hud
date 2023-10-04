@@ -1,5 +1,5 @@
 import './global.css';
-import getDefaulTemplate from './src/Templates/index.js';
+import { getDefaultTemplate, getInputType } from './src/Templates/index.js';
 import { registerGetterSetter } from './src/Utils/registerGetterSetter.js';
 import { 
     setInitial, 
@@ -12,18 +12,18 @@ class WC_HUD extends HTMLElement {
 
     static get observedAttributes(){
         if(window.document){
-            document.body.innerHTML = getDefaulTemplate(); /* DEV_NOTE__IMPORTANT # MUST be called first as before Reflect.construct() consumes template argument */
-            return [...new DOMParser().parseFromString(getDefaulTemplate(), 'text/html').all['wc-hud'].getAttributeNames().slice(1)]
+            document.body.innerHTML = getDefaultTemplate(); /* DEV_NOTE__IMPORTANT # MUST be called first as before Reflect.construct() consumes template argument */
+            return [...new DOMParser().parseFromString(getDefaultTemplate(), 'text/html').all['wc-hud'].getAttributeNames().slice(1)]
         }
     }
 
     constructor(props) {
 
         super();
-
         const self = this;
         const { isDone, container } = setInitial(self, props);
-        
+            this.container = container;
+
         globalPubSub.addEventListener(`override:summery`, ({detail})=>{
             container.firstElementChild.textContent = detail?.marker;
         })
@@ -32,9 +32,14 @@ class WC_HUD extends HTMLElement {
 
             registerGetterSetter(this);
             self.appendChild( init(this, container) );
+            self.name = "wc-hud";
             
         }
 
+    }
+
+    addSection(template = document.createElement('template'), order = 'beforeend'){
+        this.container.insertAdjacentHTML(order, template)
     }
 
     attributeChangedCallback(...params) {
@@ -44,14 +49,19 @@ class WC_HUD extends HTMLElement {
 }
 
 customElements.define('wc-hud', WC_HUD);
+const HUD = Reflect.construct(customElements.get('wc-hud'), [/* constructor.props@object ==> */{
+    template: document.body.children['wc-hud']
+    ,
+    observedAttrs: {
+        marker: ""
+    }
+}/* <== constructor.props@object */])
+
+HUD.addSection(getInputType({value: 1, step: 1, min: 1, max: Number.MAX_SAFE_INTEGER}, "range" /* in this case 2nd parameter is [OPTIONAL] */))
+HUD.addSection(getInputType(null, "text"))
+
 document.body.appendChild(
-    Reflect.construct(customElements.get('wc-hud'), [/* constructor.props@object ==> */{
-        template: document.body.children['wc-hud']
-        ,
-        observedAttrs: {
-            marker: "SUMMARY_CONTENT_PLACEHOLDER"
-        }
-    }/* <== constructor.props@object */])
+    HUD
 )
 
 ///*  === DEV_NOTE # HOW TO USE GETTER/SETTER PAIR === */

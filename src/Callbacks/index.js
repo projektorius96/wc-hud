@@ -52,7 +52,7 @@ export function showGUI(_thisArg, _container) {
         else {
             /* console.log("OPENED"); */// [PASSED]
             document.styleSheets[0].insertRule(":root { --content: \"➖\"; }", document.styleSheets[0].cssRules.length)
-            _container.firstElementChild.textContent = _thisArg.attributes?.marker.value; // <= in the future container.firstElementChild will append some inner content to itself
+            _container.firstElementChild.textContent = _thisArg.attributes?.description.value; // <= in the future container.firstElementChild will append some inner content to itself
         }
     })
     return _container;

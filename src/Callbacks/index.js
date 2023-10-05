@@ -1,7 +1,7 @@
 export function observedAttributesCallback(property, oldValue, newValue) {
 
     switch (property) {
-        case 'marker':
+        case 'description':
             if (oldValue !== newValue){
                 globalPubSub.dispatchEvent(
                     new CustomEvent("override:summery", {detail: {

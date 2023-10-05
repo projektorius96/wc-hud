@@ -2,7 +2,7 @@
 export function getDefaultTemplate(_id = "wc-hud", isParsed = false){
 
     const template = `
-    <template id="${_id}" marker>
+    <template id="${_id}" description>
         <DETAILS>
             <SUMMARY></SUMMARY>
         </DETAILS>

@@ -25,7 +25,8 @@ class WC_HUD extends HTMLElement {
             this.container = container;
 
         globalPubSub.addEventListener(`override:summery`, ({detail})=>{
-            container.firstElementChild.textContent = detail?.marker;
+            // 
+            container.firstElementChild.textContent = detail?.description;
         })
 
         if (isDone){
@@ -64,5 +65,5 @@ document.body.appendChild(
 )
 
 ///*  === DEV_NOTE # HOW TO USE GETTER/SETTER PAIR === */
-/* document.getElementsByTagName('wc-hud')[0].marker */// # GETTER EXAMPLE
-/* document.getElementsByTagName('wc-hud')[0].marker = Math.random() */// SETTER EXAMPLE
+/* document.getElementsByTagName('wc-hud')[0].description */// # GETTER EXAMPLE
+/* document.getElementsByTagName('wc-hud')[0].description = Math.random() */// SETTER EXAMPLE
